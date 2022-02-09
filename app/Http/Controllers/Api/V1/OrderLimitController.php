@@ -17,7 +17,7 @@ class OrderLimitController extends Controller
     public function index(StockRequest $request): array
     {
         // Return 22 Best BUY and 22 BEST SELL
-        $best_buy_orders = OrderLimitRepository::getBestOrders($request->stock,StockType::BUY, 22);
+        $best_buy_orders = OrderLimitRepository::getBestOrders($request->stock, StockType::BUY, 22);
         $best_sell_orders = OrderLimitRepository::getBestOrders($request->stock, StockType::SELL, 22);
 
         return [
@@ -29,7 +29,7 @@ class OrderLimitController extends Controller
     public function player(PlayerRequest $request): array
     {
         // Return order of player
-        $buy_orders = OrderLimitRepository::getPlayerOrders($request->stock,StockType::BUY, $request->owner);
+        $buy_orders = OrderLimitRepository::getPlayerOrders($request->stock, StockType::BUY, $request->owner);
         $sell_orders = OrderLimitRepository::getPlayerOrders($request->stock, StockType::SELL, $request->owner);
 
         return [

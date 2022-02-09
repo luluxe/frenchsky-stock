@@ -11,12 +11,13 @@ class TransactionUtil
     public static function process($stock, $buyer, $seller, $price, $quantity)
     {
         // Day stats
-        $day_stat = DayStatRepository::find();
+        $day_stat = DayStatRepository::find($stock);
 
         // New day
         if ($day_stat == null) {
             $day_stat = new DayStat();
             $day_stat->date = DayStatRepository::getDay();
+            $day_stat->stock = $stock;
             $day_stat->opening_price = self::getActualPrice($stock);
             $day_stat->minimum_price = $day_stat->opening_price;
             $day_stat->maximum_price = $day_stat->opening_price;

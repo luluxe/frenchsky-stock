@@ -29,7 +29,7 @@ class BrokerJob
 
     public function getAveragePrice()
     {
-        if($this->quantity == 0)
+        if ($this->quantity == 0)
             return 0;
         return $this->price / $this->quantity;
     }
@@ -85,7 +85,7 @@ class BrokerJob
 
             // Create transactions
             if ($order->isSell()) {
-                StockChannel::payMoney($order->owner, $stock,$max_quantity * $order->price);
+                StockChannel::payMoney($order->owner, $stock, $max_quantity * $order->price);
                 TransactionUtil::process($stock, $player, $order->owner, $order->price, $max_quantity);
             } else {
                 StockChannel::payStock($order->owner, $stock, $max_quantity * $order->price);
@@ -101,7 +101,7 @@ class BrokerJob
             }
         }
 
-        if($total_quantity > 0) {
+        if ($total_quantity > 0) {
             if ($type == StockType::BUY) {
                 StockChannel::payStock($player, $stock, $total_quantity);
             } else {

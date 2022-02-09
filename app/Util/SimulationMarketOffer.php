@@ -15,7 +15,8 @@ class SimulationMarketOffer
         $this->amount = $amount;
     }
 
-    public function getPrice() {
+    public function getPrice()
+    {
         return $this->price;
     }
 
@@ -24,8 +25,9 @@ class SimulationMarketOffer
         return $this->amount;
     }
 
-    public function getAveragePrice() {
-        if($this->amount == 0)
+    public function getAveragePrice()
+    {
+        if ($this->amount == 0)
             return 0;
         return $this->price / $this->amount;
     }
@@ -39,10 +41,10 @@ class SimulationMarketOffer
         $process_orders = array();
 
         // While we do not buy/sell the maximum
-        while($total_quantity != $quantity) {
+        while ($total_quantity != $quantity) {
             // While we have another offer to use
             $order = OrderLimitRepository::getBestOrderWithout($stock, StockType::inverseType($type), 1, $process_orders)->get(0);
-            if($order == null)
+            if ($order == null)
                 break;
 
             array_push($process_orders, $order->id);

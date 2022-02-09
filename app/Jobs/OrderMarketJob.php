@@ -50,14 +50,14 @@ class OrderMarketJob implements ShouldQueue
         if ($this->type == StockType::BUY && $response->getPrice() != $this->money_spent) {
             $amount = $this->money_spent - $response->getPrice();
             StockChannel::payMoney($this->player, $this->stock, $amount);
-            StockChannel::sendMessage($this->player, "ORDER_MARKET_REMAINS", [ $this->stock, $this->type, $amount ]);
+            StockChannel::sendMessage($this->player, "ORDER_MARKET_REMAINS", [$this->stock, $this->type, $amount]);
             return;
         }
 
         if ($this->type == StockType::SELL && $response->getQuantity() != $this->quantity) {
             $amount = $this->quantity - $response->getQuantity();
             StockChannel::payStock($this->player, $this->stock, $this->quantity - $response->getQuantity());
-            StockChannel::sendMessage($this->player, "ORDER_MARKET_REMAINS", [ $this->stock, $this->type, $amount ]);
+            StockChannel::sendMessage($this->player, "ORDER_MARKET_REMAINS", [$this->stock, $this->type, $amount]);
         }
     }
 }

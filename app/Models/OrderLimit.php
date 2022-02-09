@@ -15,11 +15,13 @@ class OrderLimit extends Model
 
     // Util
 
-    public function isSell() {
+    public function isSell()
+    {
         return $this->type == "SELL";
     }
 
-    public function isBuy() {
+    public function isBuy()
+    {
         return $this->type == "BUY";
     }
 }

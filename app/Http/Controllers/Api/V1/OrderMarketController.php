@@ -10,7 +10,8 @@ use App\Util\SimulationMarketOffer;
 
 class OrderMarketController extends Controller
 {
-    public function info(InfoRequest $request) {
+    public function info(InfoRequest $request)
+    {
         $simulation = SimulationMarketOffer::simulationOffer($request->stock, $request->type, $request->quantity);
 
         return [
@@ -20,7 +21,8 @@ class OrderMarketController extends Controller
         ];
     }
 
-    public function create(CreateRequest $request) {
+    public function create(CreateRequest $request)
+    {
         $job = new OrderMarketJob($request->stock, $request->type, $request->player, $request->quantity, $request->money_spent);
         $this->dispatch($job->onQueue($request->stock));
     }

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\V1\OrderLimitController;
 use App\Http\Controllers\Api\V1\OrderMarketController;
-use App\Http\Controllers\StockController;
+use App\Http\Controllers\Api\V1\StockController;
 use Illuminate\Support\Facades\Route;
 
 /*

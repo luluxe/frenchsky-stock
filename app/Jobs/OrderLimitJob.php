@@ -41,7 +41,7 @@ class OrderLimitJob implements ShouldQueue
     public function handle()
     {
         $response = BrokerJob::process($this->stock, $this->type, $this->owner, $this->quantity, $this->price, null);
-        if($response->getQuantity() == $this->quantity)
+        if ($response->getQuantity() == $this->quantity)
             return;
 
         OrderLimitRepository::create([

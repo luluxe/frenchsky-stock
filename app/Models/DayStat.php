@@ -10,6 +10,6 @@ class DayStat extends Model
     use HasFactory;
 
     protected $fillable = [
-        "date", "opening_price", "closing_price", "maximum_price", "minimum_price", "volume",
+        "date", "opening_price", "closing_price", "maximum_price", "minimum_price", "volume", "stock",
     ];
 }
