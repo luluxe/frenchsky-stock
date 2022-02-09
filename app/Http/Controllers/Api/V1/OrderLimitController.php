@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\IndexRequest;
 use App\Http\Requests\Api\V1\OrderLimit\CreateRequest;
-use App\Http\Requests\Api\V1\OrderLimit\DestroyRequest;
 use App\Http\Requests\Api\V1\OrderLimit\PlayerRequest;
+use App\Http\Requests\Api\V1\StockRequest;
 use App\Http\Resources\OrderLimitResource;
 use App\Jobs\DestroyOrderLimitJob;
 use App\Jobs\OrderLimitJob;
@@ -15,7 +14,7 @@ use App\Util\StockType;
 
 class OrderLimitController extends Controller
 {
-    public function index(IndexRequest $request): array
+    public function index(StockRequest $request): array
     {
         // Return 22 Best BUY and 22 BEST SELL
         $best_buy_orders = OrderLimitRepository::getBestOrders($request->stock,StockType::BUY, 22);
@@ -48,11 +47,11 @@ class OrderLimitController extends Controller
     /**
      * Destroy the order limit
      *
-     * @param DestroyRequest $request
+     * @param StockRequest $request
      * @param $id
      * @return void
      */
-    public function destroy(DestroyRequest $request, $id)
+    public function destroy(StockRequest $request, $id)
     {
         $job = new DestroyOrderLimitJob($id);
         $this->dispatch($job->onQueue($request->stock));

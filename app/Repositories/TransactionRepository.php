@@ -16,4 +16,9 @@ class TransactionRepository
             "quantity" => $quantity,
         ]);
     }
+
+    public static function findLast($stock) : ?Transaction
+    {
+        return Transaction::query()->where("stock", $stock)->orderBy("id", "desc")->limit(1)->get()->get(0);
+    }
 }

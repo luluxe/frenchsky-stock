@@ -6,6 +6,7 @@ use App\Repositories\OrderLimitRepository;
 use App\Repositories\TransactionRepository;
 use App\Util\StockChannel;
 use App\Util\StockType;
+use App\Util\TransactionUtil;
 use Illuminate\Support\Facades\Log;
 
 class BrokerJob
@@ -85,10 +86,10 @@ class BrokerJob
             // Create transactions
             if ($order->isSell()) {
                 StockChannel::payMoney($order->owner, $stock,$max_quantity * $order->price);
-                TransactionRepository::create($stock, $player, $order->owner, $order->price, $max_quantity);
+                TransactionUtil::process($stock, $player, $order->owner, $order->price, $max_quantity);
             } else {
                 StockChannel::payStock($order->owner, $stock, $max_quantity * $order->price);
-                TransactionRepository::create($stock, $order->owner, $player, $order->price, $max_quantity);
+                TransactionUtil::process($stock, $order->owner, $player, $order->price, $max_quantity);
             }
 
             // Update order

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api\V1\OrderLimit;
+namespace App\Http\Requests\Api\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DestroyRequest extends FormRequest
+class StockRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\OrderLimitController;
 use App\Http\Controllers\Api\V1\OrderMarketController;
+use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +20,14 @@ Route::prefix("v1")->middleware("auth.api")->group(function() {
     ///////
     /// STOCK
     ///////
+
+    /*
+     * stock
+     */
+    Route::prefix("stock")->group(function() {
+        Route::get("simple-stats", [StockController::class, "simpleStats"]);
+        Route::get("stats", [StockController::class, "stats"]);
+    });
 
     /*
      * order market
