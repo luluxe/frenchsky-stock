@@ -23,7 +23,7 @@ class OrderMarketController extends Controller
 
     public function create(CreateRequest $request)
     {
-        $job = new OrderMarketJob($request->stock, $request->type, $request->player, $request->quantity, $request->money_spent);
+        $job = new OrderMarketJob($request->server_id, $request->stock, $request->type, $request->player, $request->quantity, $request->money_spent);
         $this->dispatch($job->onQueue($request->stock));
     }
 }

@@ -13,6 +13,7 @@ class OrderLimitJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $server_id;
     private $stock;
     private $type;
     private $owner;
@@ -24,8 +25,9 @@ class OrderLimitJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($stock, $type, $owner, $price, $quantity)
+    public function __construct($server_id, $stock, $type, $owner, $price, $quantity)
     {
+        $this->server_id = $server_id;
         $this->stock = $stock;
         $this->type = $type;
         $this->owner = $owner;
@@ -40,7 +42,7 @@ class OrderLimitJob implements ShouldQueue
      */
     public function handle()
     {
-        $response = BrokerJob::process($this->stock, $this->type, $this->owner, $this->quantity, $this->price, null);
+        $response = BrokerJob::process($this->server_id, $this->stock, $this->type, $this->owner, $this->quantity, $this->price, null);
         if ($response->getQuantity() == $this->quantity)
             return;
 

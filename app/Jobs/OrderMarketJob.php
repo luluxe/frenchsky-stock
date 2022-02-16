@@ -14,6 +14,7 @@ class OrderMarketJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $server_id;
     private $stock;
     private $type;
     private $player;
@@ -25,8 +26,9 @@ class OrderMarketJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($stock, $type, $player, $quantity, $money_spent)
+    public function __construct($server_id, $stock, $type, $player, $quantity, $money_spent)
     {
+        $this->server_id = $server_id;
         $this->stock = $stock;
         $this->type = $type;
         $this->player = $player;
@@ -41,23 +43,23 @@ class OrderMarketJob implements ShouldQueue
      */
     public function handle()
     {
-        $response = BrokerJob::process($this->stock, $this->type, $this->player, $this->quantity, null, $this->money_spent);
+        $response = BrokerJob::process($this->server_id, $this->stock, $this->type, $this->player, $this->quantity, null, $this->money_spent);
         $array = [$this->stock, $this->type, $response->getPrice(), $response->getQuantity(), $response->getAveragePrice()];
-        StockChannel::sendMessage($this->player, "ORDER_MARKET_SUCCESS", $array);
+        StockChannel::sendMessage($this->server_id, $this->player, "ORDER_MARKET_SUCCESS", $array);
 
         // Remaining money/stock
 
         if ($this->type == StockType::BUY && $response->getPrice() != $this->money_spent) {
             $amount = $this->money_spent - $response->getPrice();
-            StockChannel::payMoney($this->player, $this->stock, $amount);
-            StockChannel::sendMessage($this->player, "ORDER_MARKET_REMAINS", [$this->stock, $this->type, $amount]);
+            StockChannel::payMoney($this->server_id, $this->player, $amount);
+            StockChannel::sendMessage($this->server_id, $this->player, "ORDER_MARKET_REMAINS", [$this->stock, $this->type, $amount]);
             return;
         }
 
         if ($this->type == StockType::SELL && $response->getQuantity() != $this->quantity) {
             $amount = $this->quantity - $response->getQuantity();
-            StockChannel::payStock($this->player, $this->stock, $this->quantity - $response->getQuantity());
-            StockChannel::sendMessage($this->player, "ORDER_MARKET_REMAINS", [$this->stock, $this->type, $amount]);
+            StockChannel::payStock($this->server_id, $this->player, $this->stock, $this->quantity - $response->getQuantity());
+            StockChannel::sendMessage($this->server_id, $this->player, "ORDER_MARKET_REMAINS", [$this->stock, $this->type, $amount]);
         }
     }
 }

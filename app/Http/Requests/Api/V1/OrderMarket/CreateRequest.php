@@ -24,6 +24,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
+            "server_id" => "required|string",
             "stock" => "required|string",
             "type" => "required|string|in:BUY,SELL",
             "player" => "required|string",

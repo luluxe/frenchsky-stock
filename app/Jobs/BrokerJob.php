@@ -46,6 +46,7 @@ class BrokerJob
      * OrderMarket have $limit to null
      * OrderLimit have money_spent to null
      *
+     * @param $server_id
      * @param $stock
      * @param $type
      * @param $player
@@ -54,7 +55,7 @@ class BrokerJob
      * @param $money_spent
      * @return BrokerJob
      */
-    public static function process($stock, $type, $player, $quantity, $limit, $money_spent)
+    public static function process($server_id, $stock, $type, $player, $quantity, $limit, $money_spent)
     {
         $total_quantity = 0;
         $total_price = 0;
@@ -85,10 +86,10 @@ class BrokerJob
 
             // Create transactions
             if ($order->isSell()) {
-                StockChannel::payMoney($order->owner, $stock, $max_quantity * $order->price);
+                StockChannel::payMoney($server_id, $order->owner, $max_quantity * $order->price);
                 TransactionUtil::process($stock, $player, $order->owner, $order->price, $max_quantity);
             } else {
-                StockChannel::payStock($order->owner, $stock, $max_quantity * $order->price);
+                StockChannel::payStock($server_id, $order->owner, $stock,$max_quantity * $order->price);
                 TransactionUtil::process($stock, $order->owner, $player, $order->price, $max_quantity);
             }
 
@@ -103,9 +104,9 @@ class BrokerJob
 
         if ($total_quantity > 0) {
             if ($type == StockType::BUY) {
-                StockChannel::payStock($player, $stock, $total_quantity);
+                StockChannel::payStock($server_id, $player, $stock, $total_quantity);
             } else {
-                StockChannel::payMoney($player, $stock, $total_price);
+                StockChannel::payMoney($server_id, $player, $total_price);
             }
         }
         return new BrokerJob($total_price, $total_quantity, $money_spent);

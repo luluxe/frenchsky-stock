@@ -40,7 +40,7 @@ class OrderLimitController extends Controller
 
     public function create(CreateRequest $request)
     {
-        $job = new OrderLimitJob($request->stock, $request->type, $request->owner, $request->price, $request->quantity);
+        $job = new OrderLimitJob($request->server_id, $request->stock, $request->type, $request->owner, $request->price, $request->quantity);
         $this->dispatch($job->onQueue($request->stock));
     }
 
