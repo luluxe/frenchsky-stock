@@ -123,7 +123,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', null),
+            'prefix' => env('REDIS_PREFIX', "test"),
         ],
 
         'default' => [
