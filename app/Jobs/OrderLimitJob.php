@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Repositories\OrderLimitRepository;
+use App\Util\StockChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -43,9 +44,12 @@ class OrderLimitJob implements ShouldQueue
     public function handle()
     {
         $response = BrokerJob::process($this->server_id, $this->stock, $this->type, $this->owner, $this->quantity, $this->price, null);
-        if ($response->getQuantity() == $this->quantity)
+        if ($response->getQuantity() == $this->quantity) {
+            StockChannel::sendMessage($this->server_id, $this->owner, "ORDER_LIMIT_SELL", []);
             return;
+        }
 
+        StockChannel::sendMessage($this->server_id, $this->owner, "ORDER_LIMIT_CREATE", []);
         OrderLimitRepository::create([
             "stock" => $this->stock,
             "type" => $this->type,
