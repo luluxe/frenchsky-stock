@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\OrderLimit\CreateRequest;
+use App\Http\Requests\Api\V1\OrderLimit\DestroyRequest;
 use App\Http\Requests\Api\V1\OrderLimit\PlayerRequest;
 use App\Http\Requests\Api\V1\StockRequest;
 use App\Http\Resources\OrderLimitResource;
@@ -47,13 +48,13 @@ class OrderLimitController extends Controller
     /**
      * Destroy the order limit
      *
-     * @param StockRequest $request
+     * @param DestroyRequest $request
      * @param $id
      * @return void
      */
-    public function destroy(StockRequest $request, $id)
+    public function destroy(DestroyRequest $request, $id)
     {
-        $job = new DestroyOrderLimitJob($id);
+        $job = new DestroyOrderLimitJob($id, $request->server_id);
         $this->dispatch($job->onQueue($request->stock));
     }
 }

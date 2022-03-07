@@ -15,14 +15,16 @@ class DestroyOrderLimitJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $id;
+    private $server_id;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($id)
+    public function __construct($id, $server_id)
     {
+        $this->server_id = $server_id;
         $this->id = $id;
     }
 
@@ -35,10 +37,10 @@ class DestroyOrderLimitJob implements ShouldQueue
     {
         if($this->type == "BUY") {
             // BUY
-            StockChannel::payMoney("sky-spawn-1", $this->owner, $this->quantity * $this->price);
+            StockChannel::payMoney($this->server_id, $this->owner, $this->quantity * $this->price);
         } else {
             // SELL
-            StockChannel::payStock("sky-spawn-1", $this->owner, $this->stock, $this->quantity);
+            StockChannel::payStock($this->server_id, $this->owner, $this->stock, $this->quantity);
         }
         OrderLimitRepository::destroy($this->id);
     }
