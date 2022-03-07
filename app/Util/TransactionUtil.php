@@ -15,13 +15,7 @@ class TransactionUtil
 
         // New day
         if ($day_stat == null) {
-            $day_stat = new DayStat();
-            $day_stat->date = DayStatRepository::getDay();
-            $day_stat->stock = $stock;
-            $day_stat->opening_price = self::getActualPrice($stock);
-            $day_stat->minimum_price = $day_stat->opening_price;
-            $day_stat->maximum_price = $day_stat->opening_price;
-            $day_stat->volume = 0;
+            $day_stat = self::getNewDay($stock);
         }
 
         // Update this day
@@ -35,6 +29,19 @@ class TransactionUtil
 
         // Save to transaction table
         TransactionRepository::create($stock, $buyer, $seller, $price, $quantity);
+    }
+
+    public static function getNewDay($stock): DayStat
+    {
+        $day_stat = new DayStat();
+        $day_stat->date = DayStatRepository::getDay();
+        $day_stat->stock = $stock;
+        $day_stat->opening_price = self::getActualPrice($stock);
+        $day_stat->opening_price = $day_stat->opening_price;
+        $day_stat->minimum_price = $day_stat->opening_price;
+        $day_stat->maximum_price = $day_stat->opening_price;
+        $day_stat->volume = 0;
+        return $day_stat;
     }
 
     public static function getActualPrice($stock): float
