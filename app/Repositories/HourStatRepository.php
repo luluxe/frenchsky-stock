@@ -11,7 +11,7 @@ class HourStatRepository
     {
         $day_stat = HourStat::query()
             ->where("stock", $stock)
-            ->where("date", self::getDay())
+            ->where("date", DayStatRepository::getDay())
             ->where("hour", Carbon::now()->hour)
             ->limit(1)->get()->get(0);
         if ($day_stat != null)
