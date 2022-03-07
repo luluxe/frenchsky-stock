@@ -21,7 +21,7 @@ class CreateStatistic implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(String $stock)
+    public function __construct($stock)
     {
         $this->stock = $stock;
     }
