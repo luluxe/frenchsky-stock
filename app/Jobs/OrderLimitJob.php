@@ -43,6 +43,17 @@ class OrderLimitJob implements ShouldQueue
      */
     public function handle()
     {
+        // Check max offer
+        $orders = OrderLimitRepository::getPlayerOrders($this->stock, $this->type, $this->owner);
+        if($orders == 9) {
+            StockChannel::sendMessage($this->server_id, $this->owner, "ORDER_LIMIT_MAX", []);
+            if($this->type == "BUY")
+                StockChannel::payMoney($this->server_id, $this->owner, $this->quantity * $this->price);
+            else
+                StockChannel::payStock($this->server_id, $this->owner, $this->stock, $this->quantity);
+            return;
+        }
+
         $response = BrokerJob::process($this->server_id, $this->stock, $this->type, $this->owner, $this->quantity, $this->price, null);
         if ($response->getQuantity() == $this->quantity) {
             StockChannel::sendMessage($this->server_id, $this->owner, "ORDER_LIMIT_SELL", []);
