@@ -3,12 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Jobs\CreateStatistic;
-use App\Jobs\DestroyOrderLimitJob;
 use Illuminate\Console\Command;
 
 class StockStatistic extends Command
 {
     /**
+     * /**
      * The name and signature of the console command.
      *
      * @var string
