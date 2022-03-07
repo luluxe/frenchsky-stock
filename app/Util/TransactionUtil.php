@@ -37,7 +37,7 @@ class TransactionUtil
         $day_stat->date = DayStatRepository::getDay();
         $day_stat->stock = $stock;
         $day_stat->opening_price = self::getActualPrice($stock);
-        $day_stat->opening_price = $day_stat->opening_price;
+        $day_stat->closing_price = $day_stat->opening_price;
         $day_stat->minimum_price = $day_stat->opening_price;
         $day_stat->maximum_price = $day_stat->opening_price;
         $day_stat->volume = 0;
