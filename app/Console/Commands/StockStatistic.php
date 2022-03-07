@@ -42,8 +42,7 @@ class StockStatistic extends Command
     {
         $stocks = ["ecoins"];
         foreach ($stocks as $stock) {
-            $job = new CreateStatistic($stock);
-            $job->dispatch($job->onQueue($stock));
+            CreateStatistic::dispatch($stock)->onQueue($stock);
         }
         return 0;
     }
