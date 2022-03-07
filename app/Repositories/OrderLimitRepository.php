@@ -43,8 +43,8 @@ class OrderLimitRepository
         OrderLimit::query()->create($array);
     }
 
-    public static function destroy($id)
+    public static function destroy(OrderLimit $order)
     {
-        OrderLimit::query()->findOrFail($id)->delete();
+        $order->delete();
     }
 }

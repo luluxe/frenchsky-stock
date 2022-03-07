@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\OrderLimit;
 use App\Repositories\OrderLimitRepository;
 use App\Util\StockChannel;
 use Illuminate\Bus\Queueable;
@@ -35,13 +36,14 @@ class DestroyOrderLimitJob implements ShouldQueue
      */
     public function handle()
     {
+        $order = OrderLimit::query()->findOrFail($this->id);
         if($this->type == "BUY") {
             // BUY
-            StockChannel::payMoney($this->server_id, $this->owner, $this->quantity * $this->price);
+            StockChannel::payMoney($this->server_id, $order->owner, $order->quantity * $order->price);
         } else {
             // SELL
-            StockChannel::payStock($this->server_id, $this->owner, $this->stock, $this->quantity);
+            StockChannel::payStock($this->server_id, $order->owner, $order->stock, $order->quantity);
         }
-        OrderLimitRepository::destroy($this->id);
+        OrderLimitRepository::destroy($order);
     }
 }
