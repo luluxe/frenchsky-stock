@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\CreateStatistic;
 use Illuminate\Console\Command;
+use Illuminate\Queue\Jobs\Job;
 
 class StockStatistic extends Command
 {
@@ -42,7 +43,7 @@ class StockStatistic extends Command
         $stocks = ["ecoins"];
         foreach ($stocks as $stock) {
             $job = new CreateStatistic($stock);
-            $this->dispatch($job->onQueue($stock));
+            $job->dispatch($job->onQueue($stock));
         }
         return 0;
     }
