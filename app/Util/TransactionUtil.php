@@ -20,10 +20,10 @@ class TransactionUtil
         $hour_stat = HourStatRepository::find($stock);
 
         // New day
-        if ($day_stat == null) {
+        if ($day_stat == null)
             $day_stat = self::getNewDay($stock, $current_price);
+        if ($hour_stat == null)
             $hour_stat = self::getNewHour($stock, $current_price);
-        }
 
         // Update this day
         $day_stat->closing_price = $price;
