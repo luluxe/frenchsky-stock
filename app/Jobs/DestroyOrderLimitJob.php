@@ -37,7 +37,7 @@ class DestroyOrderLimitJob implements ShouldQueue
     public function handle()
     {
         $order = OrderLimit::query()->findOrFail($this->id);
-        if($this->type == "BUY") {
+        if($order->type == "BUY") {
             // BUY
             StockChannel::payMoney($this->server_id, $order->owner, $order->quantity * $order->price);
         } else {
