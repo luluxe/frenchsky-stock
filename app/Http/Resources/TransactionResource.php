@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,6 +17,7 @@ class TransactionResource extends JsonResource
     public function toArray($request)
     {
         return [
+            "date" => Carbon::parse($this->updated_at)->toDateTimeString(),
             "stock" => $this->stock,
             "buyer" => $this->buyer,
             "seller" => $this->seller,
