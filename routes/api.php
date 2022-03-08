@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\V1\OrderLimitController;
 use App\Http\Controllers\Api\V1\OrderMarketController;
 use App\Http\Controllers\Api\V1\StockController;
-use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\Api\V1\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
