@@ -56,7 +56,7 @@ class OrderLimitJob implements ShouldQueue
 
         $response = BrokerJob::process($this->server_id, $this->stock, $this->type, $this->owner, $this->quantity, $this->price, null);
         if ($response->getQuantity() == $this->quantity) {
-            StockChannel::sendMessage($this->server_id, $this->owner, "ORDER_LIMIT_SELL", []);
+            StockChannel::sendMessage($this->server_id, $this->owner, "ORDER_LIMIT_SOLD_OUT", []);
             return;
         }
 
