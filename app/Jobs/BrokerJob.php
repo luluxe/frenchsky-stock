@@ -89,7 +89,7 @@ class BrokerJob
                 StockChannel::payMoney($server_id, $order->owner, $max_quantity * $order->price);
                 TransactionUtil::process($stock, $player, $order->owner, $order->price, $max_quantity);
             } else {
-                StockChannel::payStock($server_id, $order->owner, $stock,$max_quantity * $order->price);
+                StockChannel::payStock($server_id, $order->owner, $stock,$max_quantity);
                 TransactionUtil::process($stock, $order->owner, $player, $order->price, $max_quantity);
             }
 
