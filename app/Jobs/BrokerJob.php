@@ -39,6 +39,10 @@ class BrokerJob
         return $this->quantity;
     }
 
+    public function getMoneySpent() {
+        return $this->money_spent;
+    }
+
     // Static
 
     /**
