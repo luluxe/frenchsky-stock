@@ -62,7 +62,7 @@ class OrderLimitJob implements ShouldQueue
                 $price = ($this->price * $response->getQuantity()) - ($response->getAveragePrice() * $response->getPrice());
                 StockChannel::payMoney($this->server_id, $this->owner, $price);
             }
-            StockChannel::sendMessage($this->server_id, $this->owner, "TRUC", [$this->price, $response->getPrice(), $response->getAveragePrice(), $this->quantity, $response->getQuantity()]);
+            StockChannel::sendMessage($this->server_id, $this->owner, "ORDER_LIMIT_SOLD_OUT", [$this->price, $response->getPrice(), $response->getAveragePrice(), $this->quantity, $response->getQuantity()]);
         }
 
         if ($response->getQuantity() == $this->quantity) {
