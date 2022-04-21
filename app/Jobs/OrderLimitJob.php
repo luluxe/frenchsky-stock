@@ -55,11 +55,17 @@ class OrderLimitJob implements ShouldQueue
         }
 
         $response = BrokerJob::process($this->server_id, $this->stock, $this->type, $this->owner, $this->quantity, $this->price, null);
+
+        // If player have use more money for this order than needed
+        if($this->type == "BUY" && $response->getQuantity() > 0) {
+            if($response->getPrice() != $this->price) {
+                $price = ($response->getPrice() - $response->getPrice()) * $response->getQuantity();
+                StockChannel::payMoney($this->server_id, $this->owner, $price);
+            }
+        }
+
         if ($response->getQuantity() == $this->quantity) {
             StockChannel::sendMessage($this->server_id, $this->owner, "ORDER_LIMIT_SOLD_OUT", []);
-            if($this->type == "BUY" && $response->getMoneySpent() > 0) {
-                StockChannel::payMoney($this->server_id, $this->owner, $response->getMoneySpent());
-            }
             return;
         }
 
