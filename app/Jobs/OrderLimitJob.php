@@ -58,7 +58,7 @@ class OrderLimitJob implements ShouldQueue
 
         // If player have use more money for this order than needed
         if($this->type == "BUY" && $response->getQuantity() > 0) {
-            if($response->getPrice() != $this->price) {
+            if($response->getAveragePrice() != $this->price) {
                 $price = ($this->price * $response->getQuantity()) - ($response->getAveragePrice() * $response->getPrice());
                 StockChannel::payMoney($this->server_id, $this->owner, $price);
             }
